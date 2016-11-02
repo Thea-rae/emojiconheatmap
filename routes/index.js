@@ -56,7 +56,7 @@ router.get('/api/getEmojis', function(req,res){
     } 
     //console.log(jsonData);
 
-    return res.json(jsonData);
+    return res.jsonp(jsonData);
   });
 })
 
