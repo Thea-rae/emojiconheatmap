@@ -45,7 +45,7 @@ $(document).ready(function(){
  		};
 		
 				console.log("success?");
-		// console.log('data loaded?: ', data)		
+
 };
 
 function emojiCall(){
@@ -64,7 +64,7 @@ function emojiCall(){
 	  },
 	  complete: function() {
 	      // Schedule the next request when the current one's complete
-	      // setTimeout(emojiCall, 5000);
+	      setTimeout(emojiCall, 5000);
 	  },
 	  error:function(callback){
 	    console.log("errororororororororor")
