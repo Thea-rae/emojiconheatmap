@@ -147,10 +147,6 @@ ul {
   }
 }
 
-.about-text {
-  z-index: 1000;
-}
-
 .clear {
   clear: both;
 }
@@ -205,10 +201,22 @@ a:active {
     top: 15px;
     color: black;
   }
+ .about-text {
+    float:left;
+    margin: 2em;
+    font-size:16pt;
+    line-height: 1.5;
+    word-break:keep-all; 
+    width:250px;  
+    min-height: 90vh;
+    z-index: 1000;
+  }
+
 }
 @media only screen and (max-width: 768px) {
   .icon {
-    font-size: 192pt;
+    font-size: 171pt;
+    margin-bottom: -93px;
     text-align: center;
   }
 
@@ -222,7 +230,7 @@ a:active {
     position: relative;
   }
   .floater li {
-    position: float;
+   float:left;
   }
 
   h1 {
@@ -234,4 +242,28 @@ a:active {
     top: 13px;
     color: black;
   }
+  .about-text {
+    float:left;
+    margin: 2em;
+    font-size:14pt;
+    line-height: 1.5;
+    word-break:keep-all; 
+    width:200px;  
+    min-height: 90vh;
+    z-index: 1000;
+  }
+
+}
+@media only screen and (max-device-width: 480px) {
+  .about-text {
+    float:left;
+    margin: 1em;
+    font-size:3em;
+    line-height: 1.5;
+    word-break:keep-all; 
+    width:90vw;  
+    min-height: 90vh;
+    z-index: 1000;
+  }
+
 }

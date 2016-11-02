@@ -1,0 +1,22 @@
+{
+  "name": "emojicontracker",
+  "description": "An application for leaving notes on Twitter friends and followers",
+  "main": "js/scripts.js",
+  "authors": [
+    "Sam Sadtler"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/samsadtler/emojicontracker",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "boostrap#*3.3.7",
+    "mustache.js": "mustache#^2.2.1",
+    "google-fonts": "*"
+  }
+}
