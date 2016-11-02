@@ -12,6 +12,11 @@ var client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
+router.get('/',function(req,res){
+  res.render('index.html');
+})
+
+
 var http = require("http");
 setInterval(function() {
     http.get("http://emojiconheattracker.herokuapp.com/api/listen");
@@ -32,7 +37,6 @@ router.get('/api/listen', function(req,res){
       console.log(error);
     });
   });
-  res.render('index.html')
 })
 
 router.get('/api/getEmojis', function(req,res){
