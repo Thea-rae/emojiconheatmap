@@ -40,7 +40,8 @@ router.get('/', function(req,res){
 })
 
 router.get('/api/getEmojis', function(req,res){
-  Emoji.find(function(err, data){
+  var pull = Emoji.find().sort({num:-1});
+  pull.exec(function(err, data){
       console.log("pulling in mongodb");
     // if err or no emojis found, respond with error 
     if(err || data == null){
