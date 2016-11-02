@@ -51,7 +51,7 @@ router.get('/', function(req,res){
   
 })
 //simple route to show an HTML page
-router.get('/', function(req,res){
+router.get('/api/getEmojis', function(req,res){
   res.pullEmojis();
 })
 
