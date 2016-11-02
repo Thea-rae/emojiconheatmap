@@ -40,8 +40,24 @@ router.get('/', function(req,res){
 })
 
 router.get('/api/getEmojis', function(req,res){
-  var thing = pullEmojis();
-  return res.thing;
+  Emoji.find(function(err, data){
+      console.log("pulling in mongodb");
+    // if err or no emojis found, respond with error 
+    if(err || data == null){
+      var error = {status:'ERROR', message: 'Could not find emojis'};
+      console.log(error);
+      return res.json(error);
+    }
+
+    // otherwise, respond with the data 
+    var jsonData = {
+      status: 'OK',
+      emoji: data
+    } 
+    //console.log(jsonData);
+
+    return res.json(jsonData);
+  });
 })
 
 router.get('/api/getTopEmojis', function(req,res){
@@ -120,25 +136,7 @@ function postToServer(tweetEmojis, res){
 
 function pullEmojis(req, res){
   // mongoose method to find all, see http://mongoosejs.com/docs/api.html#model_Model.find
-    Emoji.find(function(err, data){
-      console.log("pulling in mongodb");
-    // if err or no emojis found, respond with error 
-    if(err || data == null){
-      var error = {status:'ERROR', message: 'Could not find emojis'};
-      console.log(error);
-      return res.json(error);
     }
-
-    // otherwise, respond with the data 
-    var jsonData = {
-      status: 'OK',
-      emoji: data
-    } 
-    console.log(jsonData);
-
-    return jsonData;
-  });
-}
 
 function pullTopEmojis(){
   Emoji.find(function(err, data){
