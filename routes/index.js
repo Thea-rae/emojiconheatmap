@@ -61,8 +61,16 @@ router.get('/api/getEmojis', function(req,res){
 })
 
 router.get('/api/getTopEmojis', function(req,res){
-  var thing = pullTopEmojis();
-  res.thing;
+   var topTenEmojis = Emoji.find().sort({num:-1}).limit(10);
+   topTenEmojis.exec(function(err,data){
+    if (err){return err;}
+    var jsonData={
+      status: 'OK',
+      emoji: data
+    }
+    console.log(jsonData);
+    return res.jsonp(jsonData);
+   })
 })
 
 function checkForEmoji(tweet){
@@ -134,24 +142,6 @@ function postToServer(tweetEmojis, res){
     })
  } 
 
-function pullEmojis(req, res){
-  // mongoose method to find all, see http://mongoosejs.com/docs/api.html#model_Model.find
-    }
 
-function pullTopEmojis(){
-  Emoji.find(function(err, data){
-    if(err || data ==null){
-      var error ={status:'ERROR',message: 'could not find emojis'};
-      return error;
-    }
-    var jsonData ={
-      status: 'OK',
-      emoji: data
-    }
-    for(var i in jsonData){
-
-    }
-  })
-}
 
 module.exports = router;
