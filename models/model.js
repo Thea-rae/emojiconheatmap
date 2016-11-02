@@ -4,9 +4,8 @@ var Schema = mongoose.Schema;
 // See http://mongoosejs.com/docs/schematypes.html
 
 var emojiSchema = new Schema({
-	type: Array,
-	text: String,
-	date: String
+	type: String,
+	num: Number
 })
 
 // export 'Animal' model so we can interact with it in other files
