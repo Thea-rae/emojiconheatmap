@@ -60,7 +60,7 @@ router.get('/api/getEmojis', function(req,res){
 })
 
 router.get('/api/getTenLatestEmojis', function(req,res){
-  var pull = Emoji.find().sort({created_at:-1}).limit(10);
+  var pull = Emoji.find().sort({created_at:1}).limit(10);
   pull.exec(function(err, data){
       //console.log("pulling mongodb");
     // if err or no emojis found, respond with error 
@@ -81,7 +81,7 @@ router.get('/api/getTenLatestEmojis', function(req,res){
 })
 
 router.get('/api/getAllLatestEmojis', function(req,res){
-  var pull = Emoji.find().sort({created_at:-1});
+  var pull = Emoji.find().sort({created_at:1});
   pull.exec(function(err, data){
       //console.log("pulling mongodb");
     // if err or no emojis found, respond with error 
