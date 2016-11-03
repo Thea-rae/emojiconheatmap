@@ -30,7 +30,7 @@ router.get('/api/listen', function(req,res){
   client.stream('statuses/filter',{track: '#emojicon'}, function(stream){
     stream.on('data', function(tweet) { 
       console.log(tweet);
-      checkForEmoji(tweet.text);
+      checkForEmoji(tweet.text, tweet.created_at);
     });
     stream.on('error', function(error){
       console.log(error);
@@ -59,8 +59,29 @@ router.get('/api/getEmojis', function(req,res){
   });
 })
 
-router.get('/api/getLatestEmojis', function(req,res){
-  var pull = Emoji.find().sort({date:-1});
+router.get('/api/getTenLatestEmojis', function(req,res){
+  var pull = Emoji.find().sort({created_at:-1}).limit(10);
+  pull.exec(function(err, data){
+      //console.log("pulling mongodb");
+    // if err or no emojis found, respond with error 
+    if(err || data == null){
+      var error = {status:'ERROR', message: 'Could not find emojis'};
+      console.log(error);
+      return res.json(error);
+    }
+
+    // otherwise, respond with the data 
+    var jsonData = {
+      status: 'OK',
+      emoji: data
+    }
+
+    return res.jsonp(jsonData);
+  });
+})
+
+router.get('/api/getAllLatestEmojis', function(req,res){
+  var pull = Emoji.find().sort({created_at:-1});
   pull.exec(function(err, data){
       //console.log("pulling mongodb");
     // if err or no emojis found, respond with error 
@@ -93,7 +114,7 @@ router.get('/api/getTopEmojis', function(req,res){
    })
 })
 
-function checkForEmoji(tweet){
+function checkForEmoji(tweet, tweetDate){
   var emojis =[], x=0, boo;
   for(var i in allEmojis){
      if(tweet.includes(allEmojis[i])){
@@ -105,17 +126,17 @@ function checkForEmoji(tweet){
   }
   if(boo){
     for(var i in emojis){
-      checkforEmojiOnServer(emojis[i]);
+      checkforEmojiOnServer(emojis[i], tweetDate);
     }
   }
 }
 
-function checkforEmojiOnServer(e, res){
+function checkforEmojiOnServer(e, tweetDate, res){
   console.log("searching server for "+e);
   Emoji.find({type: e}, function(err,data){
     if(data==null || data.length==0){
       var message = {status:'NO RESULTS', message: 'We couldn\'t find any results'};
-      postToServer(e);   
+      postToServer(e, tweetDate);   
     } else{
      // console.log("got to updating count");
       var jsonData = {
@@ -123,12 +144,12 @@ function checkforEmojiOnServer(e, res){
           emoji: data
       } 
       console.log(jsonData.emoji[0]._id);
-      updateEmojiCount(jsonData.emoji[0]._id, jsonData.emoji[0].num);
+      updateEmojiCount(jsonData.emoji[0]._id, jsonData.emoji[0].num, tweetDate);
     }
   });
 } 
 
-function updateEmojiCount(id, count, res){
+function updateEmojiCount(id, count, tweetDate, res){
   console.log("updating emoji count");
   var requestedId = id;
 
@@ -136,19 +157,21 @@ function updateEmojiCount(id, count, res){
 
     var number = count+1;
     dataToUpdate['num'] = number;
+    dataToUpdate['created_at'] = tweetDate;
 
     Emoji.findByIdAndUpdate(requestedId, dataToUpdate, function(err,data){
       console.log(data);
     })
 }
 
-function postToServer(tweetEmojis, res){
+function postToServer(tweetEmojis, tweetDate, res){
   console.log("posting to server"+tweetEmojis);
    var type = tweetEmojis;
    var num = 0;
     var emojiObj ={
       type: type,
-      num: num
+      num: num,
+      created_at: tweetDate
     };
     var emoji = new Emoji(emojiObj);
   emoji.save(function(err,data){
@@ -157,7 +180,7 @@ function postToServer(tweetEmojis, res){
         console.log(error);
         return res.json(error);
       }
-      console.log('saved new emoji: '+type);
+      console.log('saved new emoji: '+emojiObj);
 
     })
  } 
