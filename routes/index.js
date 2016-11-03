@@ -29,7 +29,8 @@ var allEmojis = ['😀','😬','😁','😂','😃','😄','😅','😆','😇',
 router.get('/api/listen', function(req,res){
   client.stream('statuses/filter',{track: '#emojicon'}, function(stream){
     stream.on('data', function(tweet) { 
-      console.log(tweet);
+      //console.log(tweet);
+      console.log("the tweet was tweeted at ", tweet.created_at);
       checkForEmoji(tweet.text, tweet.created_at);
     });
     stream.on('error', function(error){
@@ -150,7 +151,7 @@ function checkforEmojiOnServer(e, tweetDate, res){
 } 
 
 function updateEmojiCount(id, count, tweetDate, res){
-  console.log("updating emoji count");
+  console.log("updating emoji count", tweetDate);
   var requestedId = id;
 
    var dataToUpdate = {}; // a blank object of data to update
@@ -165,7 +166,7 @@ function updateEmojiCount(id, count, tweetDate, res){
 }
 
 function postToServer(tweetEmojis, tweetDate, res){
-  console.log("posting to server"+tweetEmojis);
+  console.log("posting to server"+tweetEmojis, tweetDate);
    var type = tweetEmojis;
    var num = 0;
     var emojiObj ={
