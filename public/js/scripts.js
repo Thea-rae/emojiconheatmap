@@ -1,9 +1,9 @@
 console.log('hello world from script.js');
 emojiCall();
 $(document).ready(function(){
-	console.log('arty')
-	
-	$('#😩').addClass("growth pulse floater");
+	// console.log('arty')
+	// animateTopEmoji();
+	// $('#😩').addClass("growth pulse floater");
 
 	var linkys = document.getElementsByClassName('dropdown-toggle');
 	for (var i = 0; i < linkys.length; ++i) {
@@ -13,13 +13,25 @@ $(document).ready(function(){
 	    e.preventDefault();
 	  };
 	}
-	
+	emojiUpdate(animateTopEmoji)
 	// console.log(twemoji.parse('I '+twemoji.convert.fromCodePoint('1f633')+' emoji!'))
 	// console.log(twemoji.parse(twemoji.convert.fromCodePoint('❤️')));
 })
 
+function animateTopEmoji(data){
+	console.log('in animateTopEmoji')
+	var emoji = data.emoji
+	console.log(emoji[1].type)
+ 	for(i in emoji){
+			$('#'+emoji[i].type).addClass("growth pulse floater");
+	}
+	setTimeout(emojiUpdate(animateTopEmoji), 5000);
+}
+
+
+
 function template(data){
- 	console.log('templating: ', data.emoji[0].type);
+ 	// console.log('templating: ', data.emoji[0].type);
  		var emoji = data.emoji
  		for(i in data.emoji){
  			var html = 
@@ -55,7 +67,7 @@ function emojiCall(){
 
 	});
 }
-function emojiUpdate(){
+function emojiUpdate(callback){
 	console.log("start emojiUpdate ajax request")
 	$.ajax({
 	  type: 'GET',
@@ -63,11 +75,10 @@ function emojiUpdate(){
 	  dataType : 'jsonp',
 	  beforeSend:function(){
 	 },
-	  success:function(data){
-		var emoji = data.emoji;
-		console.log('top emojis: ', emoji)
+	  success: callback
+		
 	   	// template({emoji});
-	  },
+	  ,
 	  complete: function() {
 	      // setTimeout(emojiCall, 5000);
 	  },
