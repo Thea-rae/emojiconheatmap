@@ -24,6 +24,7 @@ function animateTopEmoji(data){
 
 function template(data){
  		var emoji = data.emoji
+ 		// console.log(emoji)
  		for(i in data.emoji){
  			var html = 
 					'<div>'+
