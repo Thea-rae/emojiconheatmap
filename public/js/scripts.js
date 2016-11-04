@@ -2,7 +2,7 @@ console.log('hello world from script.js');
 var mostRecentTen = [];
 var allEmoji = [1];
 emojiCall(template);
-// emojiUpdate(animateTopEmoji);
+emojiUpdate(animateTopEmoji);
 
 $(document).ready(function(){
 	var linkys = document.getElementsByClassName('dropdown-toggle');
