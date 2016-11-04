@@ -2,7 +2,7 @@ console.log('hello world from script.js');
 var mostRecentTen = [];
 var allEmoji = [1];
 emojiCall(template);
-emojiUpdate(animateTopEmoji);
+// emojiUpdate(animateTopEmoji);
 
 $(document).ready(function(){
 	var linkys = document.getElementsByClassName('dropdown-toggle');
@@ -18,29 +18,47 @@ $(document).ready(function(){
 
 function convertObjectToArray(dataObject){
 	//works only for emoji data
+
 	var arr = [];
 	var emoji = dataObject.emoji;
-	// console.log('length of emoji to convert', emoji.length)
-	for (i = 0 ;i < emoji.length; i++){
-		var temp = emoji[i].type
-		// console.log('return temp', temp)
-		arr.push(temp)
-	
+	// console.log(emoji)
+	if (emoji !== undefined){
+		// console.log('emojiobject to convert')
+		for (i = 0 ;i < emoji.length; i++){
+			var temp = emoji[i].type
+			// console.log('return temp', temp)
+			arr.push(temp)
+		
+		}
+		return arr
 	}
-	
-	return arr
+
 }
 function allEmojiDuplicateCheck(dataArray){
 	// console.log('checking for dupes', dataArray)
-	arr = dataArray;
-	var sorted_arr = arr.slice().sort(); 
-	var results = [];
-	for (var i = 0; i < arr.length - 1; i++) {
-	    if (sorted_arr[i + 1] == sorted_arr[i]) {
-	        results.push(sorted_arr[i]);
-	    }
+	if (dataArray !== undefined){
+		arr = dataArray;
+		var sorted_arr = arr.slice().sort(); 
+		var results = [];
+		for (var i = 0; i < arr.length - 1; i++) {
+		    if (sorted_arr[i + 1] == sorted_arr[i]) {
+		        results.push(sorted_arr[i]);
+		    }
+		}
+		
+		if (results.length > 0) {
+			console.log('dupes found')
+			return results
+		} else {
+			console.log('dupes not found')
+			return dataArray
+		}
+	} else {
+		console.log('undefined input to dupe checking')
+		return 
 	}
-	return results
+	
+	
 }
 
 
@@ -48,33 +66,38 @@ function findNewEmoji(data, oldArray){
 	//compare incoming array with existing array and find the difference
 	var emoji = convertObjectToArray(data);
 	var differentEmoji = [];
-	jQuery.grep(emoji, function(el) {
-        if (jQuery.inArray(el, oldArray) == -1) differentEmoji.push(el);
-	});
-	console.log("returnEmoji Array: ", differentEmoji);
-
+	if (emoji !== undefined) {
+		jQuery.grep(emoji, function(el) {
+	        if (jQuery.inArray(el, oldArray) == -1) differentEmoji.push(el);
+		});
+		console.log("differentEmoji Array: ", differentEmoji);
+		return differentEmoji
+	}
 }
 
 
 function animateTopEmoji(data){
 	updateTemplate(data);
-	var emoji = data.emoji;
- 	for(i = emoji.length-1; i > emoji.length-11; i--){
-			for (j = mostRecentTen.length-1; j > 0  ; j--){
-				if (emoji[i].type !== mostRecentTen[j]){
-					// 
-					var remover = mostRecentTen.shift()
-					stopAnimateEmoji(remover);
+	var emoji = allEmojiDuplicateCheck(convertObjectToArray(data));
 
+	if (emoji !== undefined) {
+		// console.log('in animation', emoji)
+	 	for(i = emoji.length-1; i > emoji.length-11; i--){
+				for (j = mostRecentTen.length-1; j > 0  ; j--){
+					if (emoji[i] !== mostRecentTen[j]){
+						// 
+						var remover = mostRecentTen.shift()
+						stopAnimateEmoji(remover);
+
+					}
+					else{
+						console.log("didn't remove nothing'")
+					}	
 				}
-				else{
-					console.log("didn't remove nothing'")
-				}	
-			}
-		mostRecentTen.push(emoji[i].type);
-		$('#'+emoji[i].type).addClass("growth pulse floater");
+			mostRecentTen.push(emoji[i]);
+			$('#'+emoji[i]).addClass("growth pulse floater");
+		}
 	}
-	
 }
 
 function stopAnimateEmoji(type){
@@ -101,27 +124,26 @@ function template(data){
 
 
 function updateTemplate(data){
-	var emoji = findNewEmoji(data,all)
-	console.log('new emoji', emoji)
-	// checking if new emoji have been tweeted
-	// making sure that the new emoji get added
-	for(i in emoji){
-		for (j in allEmoji){
-			if (emoji[i].type == allEmoji[j]){
-
-	 			var html = 
-						'<div>'+
-							'<ul>'+
-								'<li id="'+emoji[i].type+'"class="col-sm-1 emojisvg icon">'+
-									emoji[i].type+
-								'</li>'+
-							'</ul>'+		
-						'</div>';
-				$('#emoji').append(html);
-			}	
-		}		
-	}
-		
+	var dataToArray = convertObjectToArray(data)
+	var removeDupes = allEmojiDuplicateCheck(convertObjectToArray(data))
+	var emoji = findNewEmoji(allEmojiDuplicateCheck(convertObjectToArray(data)),allEmoji)
+	if(emoji !== undefined){
+		console.log('new emoji', emoji)
+		// checking if new emoji have been tweeted
+		// making sure that the new emoji get added
+		for(i in emoji){
+			var html = 
+				'<div>'+
+					'<ul>'+
+						'<li id="'+emoji[i]+'"class="col-sm-1 emojisvg icon">'+
+							emoji[i]+
+						'</li>'+
+					'</ul>'+		
+				'</div>';
+			$('#emoji').append(html);
+			allEmoji.push(emoji[i]);
+		}
+	}	
 };
 
 //----------------------------------- ajax calls ----------------------------------------------
