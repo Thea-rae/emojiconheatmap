@@ -47,7 +47,7 @@ function allEmojiDuplicateCheck(dataArray){
 		}
 		
 		if (results.length > 0) {
-			console.log('dupes found')
+			// console.log('dupes found')
 			return results
 		} else {
 			console.log('dupes not found')
@@ -79,12 +79,12 @@ function findNewEmoji(data, oldArray){
 function animateTopEmoji(data){
 	updateTemplate(data);
 	var emoji = allEmojiDuplicateCheck(convertObjectToArray(data));
-
+	console.log('mostRecentTen emoji array' , mostRecentTen)
 	if (emoji !== undefined) {
 		// console.log('in animation', emoji)
 	 	for(i = emoji.length-1; i > emoji.length-11; i--){
-				for (j = mostRecentTen.length-1; j > 0  ; j--){
-					if (emoji[i] !== mostRecentTen[j]){
+				for (j = 11; j > 0  ; j--){
+					if (emoji[i] == mostRecentTen[j]){
 						// 
 						var remover = mostRecentTen.shift()
 						stopAnimateEmoji(remover);
@@ -92,10 +92,11 @@ function animateTopEmoji(data){
 					}
 					else{
 						console.log("didn't remove nothing'")
+						$('#'+emoji[i]).addClass("growth pulse floater");
 					}	
 				}
 			mostRecentTen.push(emoji[i]);
-			$('#'+emoji[i]).addClass("growth pulse floater");
+			
 		}
 	}
 }
@@ -129,9 +130,8 @@ function updateTemplate(data){
 	var emoji = findNewEmoji(allEmojiDuplicateCheck(convertObjectToArray(data)),allEmoji)
 	if(emoji !== undefined){
 		console.log('new emoji', emoji)
-		// checking if new emoji have been tweeted
-		// making sure that the new emoji get added
 		for(i in emoji){
+			allEmoji.push(emoji[i]);
 			var html = 
 				'<div>'+
 					'<ul>'+
@@ -140,8 +140,7 @@ function updateTemplate(data){
 						'</li>'+
 					'</ul>'+		
 				'</div>';
-			$('#emoji').append(html);
-			allEmoji.push(emoji[i]);
+			$('#emoji').append(html);		
 		}
 	}	
 };
@@ -182,7 +181,7 @@ function emojiTopUpdate(callback){
 }
 
 function emojiUpdate(callback){
-	console.log("start emojiUpdate ajax request")
+	// console.log("start emojiUpdate ajax request")
 	$.ajax({
 	  type: 'GET',
 	  url: 'http://emojiconheattracker.herokuapp.com/api/getAllLatestEmojis',
