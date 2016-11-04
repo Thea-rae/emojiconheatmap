@@ -24,8 +24,8 @@ ul {
 
 .text-right {
   position: relative;
-  right: 2%;
-  padding-top: 15px;
+  right: 4%;
+  padding-top: 3px;
 }
 
 .text-center {
@@ -38,7 +38,7 @@ ul {
 
 .mover {
   position: relative;
-  top: 28px;
+  top: 19px;
   left: 44px;
 }
 

@@ -13,7 +13,7 @@ $(document).ready(function(){
 	  };
 	}
 	// setInterval("emojiCall(template)", 5000);
-	setInterval("emojiUpdate(animateTopEmoji)", 2000);
+	setInterval("emojiUpdate(animateTopEmoji)", 3000);
 })
 
 function convertObjectToArray(dataObject){
@@ -70,7 +70,7 @@ function findNewEmoji(data, oldArray){
 		jQuery.grep(emoji, function(el) {
 	        if (jQuery.inArray(el, oldArray) == -1) differentEmoji.push(el);
 		});
-		console.log("differentEmoji Array: ", differentEmoji);
+		// console.log("differentEmoji Array: ", differentEmoji);
 		return differentEmoji
 	}
 }
@@ -139,7 +139,7 @@ function updateTemplate(data){
 	var removeDupes = allEmojiDuplicateCheck(convertObjectToArray(data))
 	var emoji = findNewEmoji(allEmojiDuplicateCheck(convertObjectToArray(data)),allEmoji)
 	if(emoji !== undefined){
-		console.log('new emoji', emoji)
+		// console.log('new emoji', emoji)
 		for(i in emoji){
 			allEmoji.push(emoji[i]);
 			var html = 
