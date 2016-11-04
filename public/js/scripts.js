@@ -13,7 +13,7 @@ $(document).ready(function(){
 	  };
 	}
 	// setInterval("emojiCall(template)", 5000);
-	setInterval("emojiUpdate(animateTopEmoji)", 3000);
+	setInterval("emojiUpdate(animateTopEmoji)", 4000);
 })
 
 function convertObjectToArray(dataObject){
@@ -24,7 +24,7 @@ function convertObjectToArray(dataObject){
 	// console.log(emoji)
 	if (emoji !== undefined){
 		// console.log('emojiobject to convert')
-		for ( i = emoji.length-1; i>0; i--){
+		for ( i in emoji){
 			var temp = emoji[i].type
 			// console.log('return temp', temp)
 			arr.push(temp)
@@ -34,7 +34,7 @@ function convertObjectToArray(dataObject){
 	}
 
 }
-function allEmojiDuplicateCheck(dataArray){
+function emojiDuplicateCheck(dataArray){
 	// console.log('checking for dupes', dataArray)
 	if (dataArray !== undefined){
 		arr = dataArray;
@@ -61,6 +61,33 @@ function allEmojiDuplicateCheck(dataArray){
 	
 }
 
+function allEmojiDuplicateCheck(dataArray){
+	// console.log('checking for dupes', dataArray)
+	if (dataArray !== undefined){
+		arr = dataArray;
+		var results = [];
+		for (var i = 0; i < arr.length - 1; i++) {
+			var el = arr[arr.lastIndexOf(arr[i])]
+			// console.log('el: ',el);
+		    if (results.indexOf(el) == -1) {
+		        results.push(el);
+		    }
+		}
+		
+		if (results.length > 0) {
+			// console.log('dupes found')
+			return results
+		} else {
+			// console.log('dupes not found')
+			return dataArray
+		}
+	} else {
+		// console.log('undefined input to dupe checking')
+		return 
+	}
+	
+	
+}
 
 function findNewEmoji(data, oldArray){
 	//compare incoming array with existing array and find the difference
@@ -89,22 +116,12 @@ function animateTopEmoji(data){
 				// console.log('removed ',remover,' from topTen')
 				stopAnimateEmoji(remover);
 		}
-	 	for(i = 0; i < 11; i++){
+	 	for(i = emoji.length-1; i > emoji.length-11 ; i--){
 	 			mostRecentTen.push(emoji[i]);
 				// console.log("didn't remove nothing'")				
 		}
 		startAnimateEmoji()	
 	}
-}
-function removeA(arr) {
-    var what, a = arguments, L = a.length, ax;
-    while (L > 1 && arr.length) {
-        what = a[--L];
-        while ((ax= arr.indexOf(what)) !== -1) {
-            arr.splice(ax, 1);
-        }
-    }
-    return arr;
 }
 function startAnimateEmoji(){
 	for (i in mostRecentTen){
