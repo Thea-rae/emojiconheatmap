@@ -165,24 +165,30 @@ function updateEmojiCount(id, count, tweetDate, res){ //id, count and date
 
 function postToServer(tweetEmojis, tweetDate, res){ // emoji and date
   console.log("posting to server"+tweetEmojis, tweetDate);
-   var type = tweetEmojis;
-   var num = 0;
-   var date = tweetDate;
-    var emojiObj ={
-      type: type,
-      num: num,
-      created_at: date
-    };
-    var emoji = new Emoji(emojiObj);
+  var type = tweetEmojis;
+  var num = 0;
+  var date = tweetDate;
+  var emojiObj ={
+        type: type,
+        num: num,
+        created_at: date
+  };
+  var emoji = new Emoji(emojiObj);
   emoji.save(function(err,data){
-      if(err){
-        var error ={status:'ERROR', message: 'Error saving emoji'};
-        console.log(error);
-        return res.json(error);
-      }
-      console.log('saved new emoji: '+emojiObj);
+        if(err){
+          var error ={status:'ERROR', message: 'Error saving emoji'};
+          console.log(error);
+          return res.json(error);
+        }
+        console.log('saved new emoji: ', emojiObj.type);
 
-    })
- } 
+      })
+  } 
 
 module.exports = router;
+
+
+
+
+
+
