@@ -24,7 +24,7 @@ function convertObjectToArray(dataObject){
 	// console.log(emoji)
 	if (emoji !== undefined){
 		// console.log('emojiobject to convert')
-		for (i = 0 ;i < emoji.length; i++){
+		for ( i = emoji.length-1; i>0; i--){
 			var temp = emoji[i].type
 			// console.log('return temp', temp)
 			arr.push(temp)
@@ -50,11 +50,11 @@ function allEmojiDuplicateCheck(dataArray){
 			// console.log('dupes found')
 			return results
 		} else {
-			console.log('dupes not found')
+			// console.log('dupes not found')
 			return dataArray
 		}
 	} else {
-		console.log('undefined input to dupe checking')
+		// console.log('undefined input to dupe checking')
 		return 
 	}
 	
@@ -64,7 +64,7 @@ function allEmojiDuplicateCheck(dataArray){
 
 function findNewEmoji(data, oldArray){
 	//compare incoming array with existing array and find the difference
-	var emoji = convertObjectToArray(data);
+	var emoji = data;
 	var differentEmoji = [];
 	if (emoji !== undefined) {
 		jQuery.grep(emoji, function(el) {
@@ -78,29 +78,39 @@ function findNewEmoji(data, oldArray){
 
 function animateTopEmoji(data){
 	updateTemplate(data);
-	var emoji = allEmojiDuplicateCheck(convertObjectToArray(data));
-	console.log('mostRecentTen emoji array' , mostRecentTen)
+	var emoji = convertObjectToArray(data);
+	// console.log('mostRecentTen emoji array' , mostRecentTen)
+	// console.log('emoji array' , emoji)
+
 	if (emoji !== undefined) {
 		// console.log('in animation', emoji)
-	 	for(i = emoji.length-1; i > emoji.length-11; i--){
-				for (j = 11; j > 0  ; j--){
-					if (emoji[i] == mostRecentTen[j]){
-						// 
-						var remover = mostRecentTen.shift()
-						stopAnimateEmoji(remover);
-
-					}
-					else{
-						console.log("didn't remove nothing'")
-						$('#'+emoji[i]).addClass("growth pulse floater");
-					}	
-				}
-			mostRecentTen.push(emoji[i]);
-			
+		for (j = mostRecentTen.length; j > 0  ; j--){
+				var remover = mostRecentTen.shift()
+				// console.log('removed ',remover,' from topTen')
+				stopAnimateEmoji(remover);
 		}
+	 	for(i = 0; i < 11; i++){
+	 			mostRecentTen.push(emoji[i]);
+				// console.log("didn't remove nothing'")				
+		}
+		startAnimateEmoji()	
 	}
 }
-
+function removeA(arr) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax= arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
+function startAnimateEmoji(){
+	for (i in mostRecentTen){
+		$('#'+mostRecentTen[i]).addClass("growth pulse floater");
+	}
+}
 function stopAnimateEmoji(type){
 	// console.log('removed' , type)
 	$('#'+type).removeClass("growth pulse floater");
